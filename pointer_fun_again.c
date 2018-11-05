@@ -11,6 +11,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #define STRING_LENGHT 64
 
@@ -24,9 +25,9 @@ void print_struct(struct PlayStruct ps,struct PlayStruct* pps);
 
 void change_struct(struct PlayStruct ps,struct PlayStruct* pps);
 
-void print_string(char string_to_print[]);
+void print_string(char* string_to_print);
 
-void change_string(char string1[], char* p_string);
+void change_string(char* string1, char** p_string);
 
 int main(int argc, char const *argv[]) {
   struct PlayStruct play_struct = {1, 1.1, "Start String"};
@@ -41,7 +42,8 @@ int main(int argc, char const *argv[]) {
 
 
   char another_string[16] = "another_string";
-  char *p_another_string = another_string;
+  char* p = another_string;
+  char** p_another_string = &p;
   change_string(play_struct.a_string, p_another_string);
   print_string(play_struct.a_string);
   print_string(another_string);
@@ -58,25 +60,18 @@ void print_struct(struct PlayStruct ps,struct PlayStruct* pps){
 void change_struct(struct PlayStruct ps,struct PlayStruct* pps){
   ps.int_value = 2;
   ps.double_value = 2.2;
-  ps.a_string[0] = 'p';
-  ps.a_string[1] = 's';
-  // delete the rest of the string
-  ps.a_string[2] = '\0';
+  strcpy(ps.a_string, "Changed Struct");
 
   pps->int_value = 3;
   pps->double_value = 3.3;
-  pps->a_string[0] = 'p';
-  pps->a_string[1] = 'p';
-  pps->a_string[2] = 's';
-  // delte the rest of the string
-  pps->a_string[3] = '\0';
+  strcpy(pps->a_string, "Changed Pointer");
 }
 
-void print_string(char string_to_print[]){
+void print_string(char* string_to_print){
   printf("%s\n",string_to_print);
 }
 
-void change_string(char string1[], char* p_string){
+void change_string(char* string1, char** p_string){
   string1[2] = '\0';
-  p_string[1] = '\0';
+  *(*p_string+1) = '\0';
 }
